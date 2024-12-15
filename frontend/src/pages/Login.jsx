@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useUserStore } from '../stores/useUserStore';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const{login} = useUserStore();
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -18,7 +22,7 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add login logic here
+    login(formData)
     console.log('Login submitted', formData);
   };
 
