@@ -10,10 +10,11 @@ import {
   LogOut
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useUserStore } from '../stores/useUserStore';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user=false;
+  const {user} =useUserStore();
   const isAdmin=false;
 
   const toggleMenu = () => {
