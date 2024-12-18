@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Mail, Lock, User, EyeOff, Eye, Loader } from 'lucide-react';
 import { useUserStore } from '../stores/useUserStore';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const {signup,user,loading}=useUserStore();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,6 +24,7 @@ const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     signup(formData)
+    navigate('/login');
     console.log('Signup submitted', formData);
   };
 

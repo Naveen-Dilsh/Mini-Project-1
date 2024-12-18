@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useUserStore } from '../stores/useUserStore';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const{login} = useUserStore();
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
