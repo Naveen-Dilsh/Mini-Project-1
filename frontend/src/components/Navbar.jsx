@@ -11,11 +11,13 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUserStore } from '../stores/useUserStore';
+import { useCartStore } from '../stores/useCartStore';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {user} =useUserStore();
-  const isAdmin=false;
+  const {user,logout} =useUserStore()
+  const {cart} =useCartStore();
+  const isAdmin= user?.role === "admin";
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -47,12 +49,38 @@ const Navbar = () => {
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
-
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-4 items-center">
+          {isAdmin && 
+                <Link to="/secret-dashboard"
+                className="text-gray-600 hover:text-blue-600 flex items-center space-x-1"
+              >
+                <LayoutDashboard size={18} />
+                <span>Dashboard</span>
+              </Link>
+            }
+            
+            {user && 
+                <Link
+								to={"/cart"}
+								className='relative group text-gray-300 hover:text-emerald-400 transition duration-300 
+							ease-in-out'
+							>
+								<ShoppingCart className='inline-block mr-1 group-hover:text-emerald-400' size={20} />
+								<span className='hidden sm:inline'>Cart</span>
+								{cart.length > 0 && (
+									<span
+										className='absolute -top-2 -left-2 bg-emerald-500 text-white rounded-full px-2 py-0.5 
+									text-xs group-hover:bg-emerald-400 transition duration-300 ease-in-out'
+									>
+										{cart.length}
+									</span>
+								)}
+							</Link>
+            }
             {user ? (
                 <>
-                     <button className="text-gray-600 hover:text-blue-600 flex items-center space-x-1">
+                     <button className="text-gray-600 hover:text-blue-600 flex items-center space-x-1" onClick={logout}>
                         <LogOut size={18} />
                         <span>Logout</span>
                     </button>
@@ -70,24 +98,6 @@ const Navbar = () => {
                 </>
             )}
            
-            
-            {isAdmin && 
-                <Link to="/dash"
-                className="text-gray-600 hover:text-blue-600 flex items-center space-x-1"
-              >
-                <LayoutDashboard size={18} />
-                <span>Dashboard</span>
-              </Link>
-            }
-            
-            {user && 
-                <Link to="/cart"
-                className="text-gray-600 hover:text-blue-600 flex items-center space-x-1"
-              >
-                <ShoppingCart size={18} />
-                <span>Cart</span>
-              </Link>
-            }
           </div>
 
           {/* Mobile Menu Dropdown */}

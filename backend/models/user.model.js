@@ -14,7 +14,24 @@ const userSchema = new mongoose.Schema(
         password:{
             type:"string",
             required:[true,"Password is required"]
-        }
+        },
+        role:{
+            type:"string",
+            enum:["customer","admin"],
+            default:"customer"
+        },
+        cartItems:[
+            {
+                quantity:{
+                    type:Number,
+                    default:1,
+                },
+                product:{
+                    type:mongoose.Schema.Types.ObjectId,
+                    ref:"Product"
+                },
+            },
+        ]
     },
     {
         timestamps:true,
