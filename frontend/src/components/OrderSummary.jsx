@@ -10,18 +10,41 @@ import {
   CheckCircle2, 
   ArrowRight 
 } from "lucide-react";
+import {loadStripe} from "@stripe/stripe-js"
+import axios from "../lib/axios"
+
+const stripePromise = loadStripe
+("pk_test_51QY0RiEK6oy1SujkgMf5mSQXU6F0gRMhrWjgeS1SORlkWxa8Kkbdmfg0uY69MHMJ5Mi7DA0q3aC4o1aYZ3lL52xO00Zxk3qD95")
 
 
 
 const OrderSummary = () => {
   const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
   const savings = subtotal - total;
+
   const formattedSubtotal = subtotal.toFixed(2);
   const formattedTotal = total.toFixed(2);
   const formattedSavings = savings.toFixed(2);
 
   const handlePayment = async () => {
-    
+    try {
+        const stripe= await stripePromise;
+        const res= await axios.post("/payment/create-checkout-session",{
+            products : cart
+        });
+
+        const session = res.data;
+        console.log(session)
+        const result = await stripe.redirectToCheckout({
+            sessionId:session.id,
+        });
+
+        if(result.error){
+            console.error("Error",result.error)
+        }
+    } catch (error) {
+        
+    }
   };
 
   return (

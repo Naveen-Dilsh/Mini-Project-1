@@ -15,12 +15,12 @@ import LoadingSpinner from "../components/LoadingSpinner"
 const ProductsList = () => {
   const { products, toggleFeaturedProducts, deleteProduct, loading, fetchAllProducts } = useProductStore();
   const [expandedProduct, setExpandedProduct] = useState(null);
+  const [hoveredProducts, setHoveredProducts] = useState({});
 
   useEffect(() => {
     fetchAllProducts();
-  }, [fetchAllProducts])
-  
-  // Color themes from AdminPage tabs
+  }, [fetchAllProducts]);
+
   const themes = {
     create: "from-emerald-400 to-emerald-600",
     products: "from-blue-400 to-blue-600",
@@ -28,7 +28,6 @@ const ProductsList = () => {
     settings: "from-orange-400 to-orange-600"
   };
 
-  // Variant for product card animations
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { 
@@ -47,7 +46,6 @@ const ProductsList = () => {
     }
   };
 
-  // Show loading spinner if products are loading
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -75,23 +73,45 @@ const ProductsList = () => {
                 hover:scale-105 hover:shadow-2xl
               `}
             >
-              {/* Product Image */}
-              <div className="relative h-48 w-full">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="absolute inset-0 w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
-                />
-                <div className="absolute top-4 right-4 flex space-x-2">
-                  {/* Featured Toggle */}
+              {/* Product Images Container */}
+              <div 
+                className="relative h-48 w-full overflow-hidden"
+                onMouseEnter={() => setHoveredProducts(prev => ({ ...prev, [product._id]: true }))}
+                onMouseLeave={() => setHoveredProducts(prev => ({ ...prev, [product._id]: false }))}
+              >
+                {/* Primary Image */}
+                {product.images?.[0] && (
+                  <img 
+                    src={product.images[0]} 
+                    alt={product.name}
+                    className={`
+                      absolute inset-0 w-full h-full object-cover 
+                      transition-transform duration-500 ease-in-out
+                      ${hoveredProducts[product._id] ? '-translate-x-full' : 'translate-x-0'}
+                    `}
+                  />
+                )}
+                
+                {/* Secondary Image (shown on hover) */}
+                {product.images?.[1] && (
+                  <img 
+                    src={product.images[1]}
+                    alt={`${product.name} alternate view`}
+                    className={`
+                      absolute inset-0 w-full h-full object-cover 
+                      transition-transform duration-500 ease-in-out
+                      ${hoveredProducts[product._id] ? 'translate-x-0' : 'translate-x-full'}
+                    `}
+                  />
+                )}
+
+                <div className="absolute top-4 right-4 flex space-x-2 z-10">
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => toggleFeaturedProducts(product._id)}
                     className={`
                       p-2 rounded-full 
-                      ${product.isFeatured 
-                        ? "bg-yellow-400 text-gray-900" 
-                        : "bg-white/20 text-white"}
+                      ${product.isFeatured ? "bg-yellow-400 text-gray-900" : "bg-white/20 text-white"}
                       hover:bg-yellow-400 hover:text-gray-900
                       transition-colors duration-200
                     `}
@@ -99,12 +119,9 @@ const ProductsList = () => {
                     <Star className="h-5 w-5" />
                   </motion.button>
 
-                  {/* Info Button */}
                   <motion.button
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => setExpandedProduct(
-                      expandedProduct === product._id ? null : product._id
-                    )}
+                    onClick={() => setExpandedProduct(expandedProduct === product._id ? null : product._id)}
                     className="bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors"
                   >
                     <Info className="h-5 w-5" />
@@ -112,7 +129,6 @@ const ProductsList = () => {
                 </div>
               </div>
 
-              {/* Product Details */}
               <div className="p-6">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-xl font-bold">{product.name}</h3>
@@ -124,15 +140,12 @@ const ProductsList = () => {
                 <div className="flex justify-between items-center">
                   <div className="text-2xl font-bold">${product.price.toFixed(2)}</div>
                   <div className="flex space-x-2">
-                    {/* Edit Button */}
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       className="text-white hover:text-gray-200"
                     >
                       <Edit className="h-5 w-5" />
                     </motion.button>
-                    
-                    {/* Delete Button */}
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={() => deleteProduct(product._id)}
@@ -144,7 +157,6 @@ const ProductsList = () => {
                 </div>
               </div>
 
-              {/* Expanded Product Details */}
               <AnimatePresence>
                 {expandedProduct === product._id && (
                   <motion.div
@@ -153,7 +165,6 @@ const ProductsList = () => {
                     exit={{ height: 0, opacity: 0 }}
                     className="absolute inset-0 bg-black/80 p-6 flex flex-col justify-center items-center text-center"
                   >
-                    {/* Close Button */}
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={() => setExpandedProduct(null)}

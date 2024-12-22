@@ -1,64 +1,87 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 
-const categoryThemes = [
-  "from-emerald-400 to-emerald-600",
-  "from-blue-400 to-blue-600", 
-  "from-purple-400 to-purple-600",
-  "from-orange-400 to-orange-600"
-];
-
-const CollectionItem = ({ category, index }) => {
-  // Randomly select a theme or use a theme based on index
-  const theme = categoryThemes[index % categoryThemes.length];
+const ProductShowcase = () => {
+  const products = [
+    {
+      image: "Col 1.png",
+      title: "Custom Suits",
+      price: "from 219€",
+      categories: [
+        "Custom Suits",
+        "Peaky Blinders Suits",
+        "Cocktail Suit",
+        "Big and Tall Suits",
+        "Blue Suits",
+        "Gray Suits"
+      ]
+    },
+    {
+      image: "/Col 2.png",
+      title: "Custom Dress Shirts",
+      price: "from 49€",
+      categories: [
+        "Custom Dress Shirts",
+        "Grandad Collar Shirt",
+        "White Tie Shirts",
+        "Oxford Shirts",
+        "Mao Shirts",
+        "Linen Shirts"
+      ]
+    },
+    {
+      image: "/Col 3.png",
+      title: "Custom Blazers",
+      price: "from 149€",
+      categories: [
+        "Custom Blazers",
+        "Linen Clothing",
+        "Dinner Jacket",
+        "Nehru Jackets",
+        "Seersucker Jackets",
+        "Velvet Blazers"
+      ]
+    }
+  ];
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ 
-        duration: 0.5, 
-        delay: index * 0.2,
-        type: "spring",
-        stiffness: 100 
-      }}
-      className={`relative overflow-hidden rounded-2xl shadow-lg 
-        bg-gradient-to-br ${theme} 
-        transform transition-all duration-300 
-        hover:scale-105 hover:shadow-2xl`}
-    >
-      <Link to={category.href} className="block p-6">
-        <div className="flex flex-col items-start space-y-4">
-          {/* Optional: Add dynamic icon based on category */}
-          <div className="w-16 h-16 bg-white/20 rounded-full 
-            flex items-center justify-center backdrop-blur-sm">
-            <img 
-              src={category.imageUrl} 
-              alt={category.name} 
-              className="w- h-10 object-cover rounded-full"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <h3 className="text-2xl font-bold text-white">
-              {category.name}
-            </h3>
-            <p className="text-white/80 text-sm">
-              Explore our {category.name.toLowerCase()} collection
-            </p>
-          </div>
-          
-          <div className="flex items-center text-white">
-            <span className="mr-2 font-medium">Shop Now</span>
-            <ArrowRight size={20} />
-          </div>
-        </div>
-      </Link>
-    </motion.div>
+    <div className="container mx-auto px-4 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+        {products.map((product, index) => (
+          <React.Fragment key={index}>
+            {/* Image Column */}
+            <div className="lg:col-span-1 relative group">
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full h-[600px] object-cover object-center rounded-lg"
+              />
+            </div>
+
+            {/* Content Column */}
+            <div className="lg:col-span-1 space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold text-gray-800">{product.title}</h2>
+                <p className="text-lg text-gray-600">{product.price}</p>
+                <button className="px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">
+                  START DESIGNING
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {product.categories.map((category, idx) => (
+                  <div key={idx} className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors duration-200 cursor-pointer group">
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-orange-500" />
+                    <span>{category}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
   );
 };
 
-export default CollectionItem;
-
+export default ProductShowcase;

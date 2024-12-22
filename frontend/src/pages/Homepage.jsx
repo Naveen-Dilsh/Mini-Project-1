@@ -1,11 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import HeroSection from '../components/HeroSection'
+import Guarantee from '../components/Gurantee'
+import Steps from '../components/Steps'
+import Testimonial from '../components/Testimonial'
+
 
 const Homepage = () => {
   return (
     <>
         <HeroSection/>
+        <Guarantee/>
+        <Steps/>
+        <Testimonial/>
     </>
   )
 }
