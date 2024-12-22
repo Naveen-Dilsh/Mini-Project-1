@@ -14,9 +14,15 @@ const productSchema = new mongoose.Schema(
             type:Number,
             required:[true,"price is required"]
         },
-        image:{
-            type:String,
-            required:[true,"image is required"]
+        images: {
+            type: [String], // Array of strings
+            required: [true, "At least one image is required"],
+            validate: {
+                validator: function(v) {
+                    return v.length > 0; // Ensures at least one image is provided
+                },
+                message: 'Product must have at least one image'
+            }
         },
         category:{
             type:String,

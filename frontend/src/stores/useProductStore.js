@@ -8,18 +8,24 @@ export const useProductStore = create((set,get)=>({
 
     setProducts:(products)=>set({products}),
 
-    createProducts:async (productData)=>{
-        set({loading:true})
+    createProducts: async (productData) => {
+        set({ loading: true });
         try {
-            const res = await axios.post("/products",productData)
-            set((prevState)=>({
-                products:[...prevState.products,res.data],
-                loading:false
-            }))
+            // Convert FileList to base64 strings if needed
+            const processedData = { ...productData };
+            if (productData.images && productData.images.length > 0) {
+                processedData.images = productData.images; // Already processed in CreateProduct component
+            }
+
+            const res = await axios.post("/products", processedData);
+            set((prevState) => ({
+                products: [...prevState.products, res.data],
+                loading: false
+            }));
             toast.success("Item Created Successfully");
         } catch (error) {
-            toast.error(error.response.data.error || "Item Create failed");
-            set({loading:false});
+            toast.error(error.response?.data?.error || "Item Create failed");
+            set({ loading: false });
         }
     },
 
@@ -78,19 +84,18 @@ export const useProductStore = create((set,get)=>({
         }
     },
 
-    deleteProduct:async(Id)=>{
-        set({loading:true})
+    deleteProduct: async (Id) => {
+        set({ loading: true });
         try {
-            const response = await axios.delete(`/products/${Id}`)
-            console.log(response.data);
-            set((prevProducts) =>({
-                products:prevProducts.products.filter((product)=>product._id !==Id),
-                loading:false
-            }))
-            toast.success("Product deleted Successfully")
+            const response = await axios.delete(`/products/${Id}`);
+            set((prevProducts) => ({
+                products: prevProducts.products.filter((product) => product._id !== Id),
+                loading: false
+            }));
+            toast.success("Product deleted Successfully");
         } catch (error) {
             set({ loading: false });
-			toast.error(error.response.data.error || "Failed to delete product"); 
+            toast.error(error.response?.data?.error || "Failed to delete product");
         }
     }
 }))

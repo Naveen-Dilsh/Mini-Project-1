@@ -13,6 +13,10 @@ import CategoryPage from "./pages/CategoryPage"
 import CartPage from "./pages/CartPage"
 import { useCartStore } from "./stores/useCartStore"
 import ProductDetails from "./components/ProductDetailes"
+import PurchaseSuccessPage from "./pages/PurchaseSuccessPage"
+import PurchaseCancelPage from "./pages/PurchaseCancelPage"
+import Guarantee from "./components/Gurantee"
+import CollectionPage2 from "./pages/CollectionPage2"
 
 
 
@@ -39,11 +43,14 @@ function App() {
         {/* <Route path="/signup" element={!user ?<SignupPage/>:<Navigate to ="/"/>}/> */}
         <Route path="/signup" element={<SignupPage/>}/>
         <Route path="/login" element={!user ?<LoginPage/>:<Navigate to="/"/>}/>
-        <Route path="/collection" element={<CollectionsPage/>}/>
+        <Route path="/collection" element={<CollectionPage2/>}/>
         <Route path="/category/:category" element={<CategoryPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
         <Route path="/product-details" element={<ProductDetails/>}/>
+        <Route path="/purchase-success" element={<PurchaseSuccessPage/>}/>
+        <Route path="/purchase-cancel" element={<PurchaseCancelPage/>}/>
 
+        <Route path="/guarantee" element={<Guarantee/>}/> 
         <Route
 						path='/secret-dashboard'
 						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}

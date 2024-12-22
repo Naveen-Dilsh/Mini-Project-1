@@ -17,19 +17,24 @@ export const getAllProducts = async (req,res)=>{
 
 export const createProducts = async (req,res)=>{
     try {
-        const {name,price,image,description,category} = req.body;
+        const {name,price,images,description,category,specialFeatures} = req.body;
 
-        let cloudinaryResponse = null
+        const cloudinaryUrls = [];
 
-        if(image){
-            cloudinaryResponse = await cloudinary.uploader.upload(image,{folder:"products"})
+        if(images && images.length>0){
+            for (const image of images){
+                const cloudinaryResponse = await cloudinary.uploader.upload(image,{
+                    folder:"products"
+                });
+                cloudinaryUrls.push(cloudinaryResponse.secure_url)
+            }
         }
 
         const product = await Product.create({
             name,
             description,
             price,
-            image : cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
+            images:cloudinaryUrls,
             category,
         });
 

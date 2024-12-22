@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Package, DollarSign, AlignLeft, List, ImagePlus, Loader, Check } from 'lucide-react';
+import { Package, DollarSign, AlignLeft, List, ImagePlus, Loader, Check,X } from 'lucide-react';
 import { useProductStore } from '../stores/useProductStore';
 
 const CreateProduct = () => {
@@ -7,28 +7,28 @@ const CreateProduct = () => {
     
     // Feature mapping based on category
     const featuresByCategory = {
-        'LapTop': [
+        'Suits': [
             "High-Performance Processor",
             "Full HD Display", 
             "Lightweight Design", 
             "Long Battery Life",
             "Advanced Cooling System"
         ],
-        'Phone': [
+        'Shirts': [
             "5G Connectivity",
             "Multiple Camera Lenses", 
             "OLED Display", 
             "AI-Powered Photography",
             "Fast Charging"
         ],
-        'Watch': [
+        'Blazers': [
             "Heart Rate Monitoring",
             "GPS Tracking", 
             "Waterproof Design", 
             "Long Battery Life",
             "Sleep Tracking"
         ],
-        'Monitor': [
+        'Shirts': [
             "4K Resolution",
             "Ultra-Wide Screen", 
             "High Refresh Rate", 
@@ -42,15 +42,15 @@ const CreateProduct = () => {
         price: '',
         description: '',
         category: '',
-        image: '',
+        images: [],
         specialFeatures: [] // New array to store selected features
     });
-
+    const [imagesPreviews, setImagesPreviews] = useState([]); // State for image previews
     const categories = [
         { value: '', label: 'Select Category' },
-        { value: 'LapTop', label: 'Laptop' },
-        { value: 'Phone', label: 'Phone' },
-        { value: 'Watch', label: 'Watch' },
+        { value: 'Suits', label: 'Suits' },
+        { value: 'Shirts', label: 'Shirts' },
+        { value: 'Blazers', label: 'Blazers' },
         { value: 'Monitor', label: 'Monitor' }
     ];
 
@@ -62,16 +62,33 @@ const CreateProduct = () => {
         }));
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setProductData({ ...productData, image: reader.result });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    const handleImagesChange = (e) => {
+      const files = Array.from(e.target.files);
+      
+      // Process each file
+      files.forEach(file => {
+          const reader = new FileReader();
+          reader.onload = () => {
+              setProductData(prev => ({
+                  ...prev,
+                  images: [...prev.images, reader.result]
+              }));
+              setImagesPreviews(prev => [...prev, {
+                  url: reader.result,
+                  name: file.name
+              }]);
+          };
+          reader.readAsDataURL(file);
+      });
+  };
+
+  const removeImage = (index) => {
+      setProductData(prev => ({
+          ...prev,
+          images: prev.images.filter((_, i) => i !== index)
+      }));
+      setImagesPreviews(prev => prev.filter((_, i) => i !== index));
+  };
 
     const handleFeatureToggle = (feature) => {
         setProductData(prev => {
@@ -87,7 +104,7 @@ const CreateProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Validate form
-        if (!productData.name || !productData.price || !productData.category) {
+        if (!productData.name || !productData.price || !productData.category || productData.images.length === 0) {
             alert('Please fill in all required fields');
             return;
         }
@@ -99,9 +116,10 @@ const CreateProduct = () => {
                 description: "", 
                 price: "", 
                 category: "", 
-                image: "",
+                images: [],
                 specialFeatures: [] 
             });
+            setImagesPreviews([]);
         } catch (error) {
             console.log(error);
         }
@@ -231,27 +249,45 @@ const CreateProduct = () => {
                             </div>
                         </div>
                     )}
-                    {/* Image Upload */}
-                    <div className="relative">
-                      <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
-                        Product Image
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="file"
-                          id="image"
-                          name="image"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-blue-700 hover:file:bg-blue-100"
-                        />
-                        <ImagePlus className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                      </div>
-                      {productData.image && (
-                        <p className="text-sm text-gray-500 mt-2">
-                          Image Uploaded
-                        </p>
-                      )}
+                     {/* Multiple Images Upload */}
+                     <div className="relative">
+                        <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">
+                            Product Images
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="file"
+                                id="images"
+                                name="images"
+                                accept="image/*"
+                                multiple
+                                onChange={handleImagesChange}
+                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-blue-700 hover:file:bg-blue-100"
+                            />
+                            <ImagePlus className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        </div>
+
+                        {/* Image Previews */}
+                        {imagesPreviews.length > 0 && (
+                            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {imagesPreviews.map((image, index) => (
+                                    <div key={index} className="relative group">
+                                        <img
+                                            src={image.url}
+                                            alt={`Preview ${index + 1}`}
+                                            className="w-full h-32 object-cover rounded-lg"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(index)}
+                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
 
