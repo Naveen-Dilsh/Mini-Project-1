@@ -5,6 +5,7 @@ import toast from "react-hot-toast"
 export const useProductStore = create((set,get)=>({
     products:[],
     loading:false,
+    recommendedItems: [],
 
     setProducts:(products)=>set({products}),
 
@@ -96,6 +97,29 @@ export const useProductStore = create((set,get)=>({
         } catch (error) {
             set({ loading: false });
             toast.error(error.response?.data?.error || "Failed to delete product");
+        }
+    },
+
+    fetchRecommendedItems: async (filters = {}) => {
+        set({ loading: true });
+        try {
+            // Construct query string from filters
+            const queryParams = new URLSearchParams(filters).toString();
+            const url = `/products/recommended-items${queryParams ? `?${queryParams}` : ''}`;
+            
+            const response = await axios.get(url);
+            
+            if (response.data.success) {
+                set({
+                    recommendedItems: response.data.recommendedItems,
+                    loading: false
+                });
+                return response.data.recommendedItems;
+            }
+        } catch (error) {
+            set({ loading: false });
+            toast.error(error.response?.data?.error || "Failed to fetch recommended items");
+            return [];
         }
     }
 }))

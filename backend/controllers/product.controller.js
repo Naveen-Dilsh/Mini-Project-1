@@ -234,3 +234,111 @@ async function updateFeaturedProductCache() {
 //         res.status(501).json({ Success: false, message: "server error", error: error.message });
 //     }
 // }
+
+export const getRecommendedItems = async (req, res) => {
+    try {
+        // Check if we have cached recommendations
+        const cachedRecommendations = await redis.get("recommended_items");
+        if (cachedRecommendations) {
+            return res.json({
+                success: true,
+                recommendedItems: JSON.parse(cachedRecommendations)
+            });
+        }
+
+        // Get query parameters for filtering
+        const { category, maxPrice } = req.query;
+
+        // Build the match stage for aggregation
+        const matchStage = {};
+        
+        if (category) {
+            matchStage.category = category;
+        }
+        
+        if (maxPrice) {
+            matchStage.price = { $lte: parseFloat(maxPrice) };
+        }
+
+        // Aggregate pipeline
+        const pipeline = [
+            // Match stage (if filters are provided)
+            ...(Object.keys(matchStage).length > 0 ? [{ $match: matchStage }] : []),
+            
+            // Get random samples
+            { $sample: { size: 4 } },
+            
+            // Project only needed fields
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    description: 1,
+                    images: 1,
+                    price: 1,
+                    category: 1,
+                    isFeatured: 1,
+                    createdAt: 1
+                }
+            },
+
+            // Add a field for primary and secondary images
+            {
+                $addFields: {
+                    primaryImage: { $arrayElemAt: ["$images", 0] },
+                    secondaryImage: {
+                        $cond: {
+                            if: { $gte: [{ $size: "$images" }, 2] },
+                            then: { $arrayElemAt: ["$images", 1] },
+                            else: { $arrayElemAt: ["$images", 0] }
+                        }
+                    }
+                }
+            }
+        ];
+
+        const recommendedItems = await Product.aggregate(pipeline);
+
+        if (!recommendedItems || recommendedItems.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No recommended items found"
+            });
+        }
+
+        // Cache only the recommendedItems array
+        await redis.set(
+            "recommended_items",
+            JSON.stringify(recommendedItems),
+            'EX',
+            3600
+        );
+
+        res.json({
+            success: true,
+            recommendedItems
+        });
+
+    } catch (error) {
+        console.log("Error in getRecommendedItems controller", error.message);
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
+    }
+};
+
+// Helper function to update recommended items cache
+export const updateRecommendedItemsCache = async () => {
+    try {
+        // Clear the existing cache
+        await redis.del("recommended_items");
+        
+        console.log("Recommended items cache cleared successfully");
+        return true;
+    } catch (error) {
+        console.log("Error in updateRecommendedItemsCache", error.message);
+        return false;
+    }
+};
