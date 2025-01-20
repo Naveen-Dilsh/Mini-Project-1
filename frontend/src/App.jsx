@@ -5,6 +5,7 @@ import LoginPage from "./pages/login"
 import Navbar from "./components/Navbar"
 import { Toaster } from "react-hot-toast"
 import { useUserStore } from "./stores/useUserStore"
+import { useProductStore } from "./stores/useProductStore"
 import { useEffect } from "react"
 import LoadingSpinner from "./components/LoadingSpinner"
 import AdminPage from "./pages/AdminPage"
@@ -23,9 +24,11 @@ import CollectionPage2 from "./pages/CollectionPage2"
 function App() {
   const {user, checkAuth ,checkingAuth} = useUserStore();
   const {getCartItems} = useCartStore();
+  const {fetchRecommendedItems} = useProductStore();
   useEffect(() => {
 		checkAuth();
-	}, [checkAuth]);
+    fetchRecommendedItems();
+	}, [checkAuth,fetchRecommendedItems]);
 
   useEffect(() => {
 		if (!user) return;
@@ -51,6 +54,8 @@ function App() {
         <Route path="/purchase-cancel" element={<PurchaseCancelPage/>}/>
 
         <Route path="/guarantee" element={<Guarantee/>}/> 
+        {/* Change this line in your Routes */}
+        <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route
 						path='/secret-dashboard'
 						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}

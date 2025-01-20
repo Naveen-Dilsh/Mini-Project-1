@@ -28,13 +28,7 @@ const CreateProduct = () => {
             "Long Battery Life",
             "Sleep Tracking"
         ],
-        'Shirts': [
-            "4K Resolution",
-            "Ultra-Wide Screen", 
-            "High Refresh Rate", 
-            "HDR Support",
-            "Ergonomic Stand"
-        ]
+        
     };
 
     const [productData, setProductData] = useState({
