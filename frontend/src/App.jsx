@@ -54,6 +54,8 @@ function App() {
         <Route path="/purchase-cancel" element={<PurchaseCancelPage/>}/>
 
         <Route path="/guarantee" element={<Guarantee/>}/> 
+        {/* Change this line in your Routes */}
+        <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route
 						path='/secret-dashboard'
 						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}

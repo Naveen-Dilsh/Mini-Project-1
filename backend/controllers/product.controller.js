@@ -137,6 +137,17 @@ export const getFeaturedProductByCategory = async (req, res) => {
     }
 }
 
+export const getProductsById = async (req,res) =>{
+    const ID = req.params.id;
+    try {
+        const product = await Product.findById(ID)
+        res.status(201).json({Success:true,product});
+    } catch (error) {
+        console.log("Error in getItemsById controller ",error.message)
+        res.status(500).json({Success:false,message:"Server Error",error:error.message})
+    }
+}
+
 export const deleteProduct = async (req,res)=>{
     try {
         const Id = req.params.id
