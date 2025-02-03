@@ -9,7 +9,7 @@ const CollectionPage2 = () => {
       price: "from 219€",
       mainCategory: "/Suits",
       categories: [
-        "Custom Suits",
+        // "Custom Suits",
         "Peaky Blinders Suits",
         "Cocktail Suit",
         "Big and Tall Suits",
@@ -27,7 +27,7 @@ const CollectionPage2 = () => {
       price: "from 49€",
       mainCategory: "/Shirts",
       categories: [
-        "Custom Dress Shirts",
+        // "Custom Dress Shirts",
         "Grandad Collar Shirt",
         "White Tie Shirts",
         "Oxford Shirts",
@@ -44,7 +44,7 @@ const CollectionPage2 = () => {
       price: "from 149€",
       mainCategory: "/Blazers",
       categories: [
-        "Custom Blazers",
+        // "Custom Blazers",
         "Linen Clothing",
         "Dinner Jacket",
         "Nehru Jackets",
@@ -61,7 +61,7 @@ const CollectionPage2 = () => {
       price: "from 219€",
       mainCategory: "/Suits",
       categories: [
-        "Custom Suits",
+        // "Custom Suits",
         "Peaky Blinders Suits",
         "Cocktail Suit",
         "Big and Tall Suits",
@@ -79,7 +79,7 @@ const CollectionPage2 = () => {
       price: "from 49€",
       mainCategory: "/Shirts",
       categories: [
-        "Custom Dress Shirts",
+        // "Custom Dress Shirts",
         "Grandad Collar Shirt",
         "White Tie Shirts",
         "Oxford Shirts",
@@ -96,7 +96,7 @@ const CollectionPage2 = () => {
       price: "from 149€",
       mainCategory: "/Blazers",
       categories: [
-        "Custom Blazers",
+        // "Custom Blazers",
         "Linen Clothing",
         "Dinner Jacket",
         "Nehru Jackets",

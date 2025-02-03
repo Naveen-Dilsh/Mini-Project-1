@@ -4,6 +4,7 @@ import Guarantee from '../components/Gurantee'
 import Steps from '../components/Steps'
 import Testimonial from '../components/Testimonial'
 import BestOutfits from '../components/BestOutfits'
+import WeddingShowcase from '../components/WeddingShowcase'
 
 
 
@@ -11,7 +12,7 @@ const Homepage = () => {
   return (
     <>
         <HeroSection/>
-        <BestOutfits/>
+        <WeddingShowcase/>
         <Guarantee/>
         <Steps/>
         <Testimonial/>

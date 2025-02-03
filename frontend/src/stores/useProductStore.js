@@ -84,6 +84,7 @@ export const useProductStore = create((set,get)=>({
             toast.error(error.response.data.error || "Failed to fetch products");
         }
     },
+    
 
     deleteProduct: async (Id) => {
         set({ loading: true });
