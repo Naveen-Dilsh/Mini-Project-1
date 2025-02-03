@@ -5,6 +5,8 @@ import { useProductStore } from '../stores/useProductStore';
 import { useCartStore } from '../stores/useCartStore';
 import { useUserStore } from '../stores/useUserStore';
 import toast from 'react-hot-toast';
+import axios from '../lib/axios';
+import ProductGallery from './ProductGallery';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -19,11 +21,12 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(true)
       try {
         // Replace this with your actual API call
-        const response = await fetch(`/api/products/${id}`);
-        const data = await response.json();
-        setProduct(data);
+        const response = await axios.get(`/products/${id}`);
+        setProduct(response.data.product);
+        console.log(response.data)
       } catch (error) {
         console.error('Error fetching product:', error);
         toast.error('Failed to load product details');
@@ -47,7 +50,8 @@ const ProductDetails = () => {
     }
 
     try {
-      await addToCart({ ...product, quantity, size: selectedSize });
+      addToCart(product);
+      console.log(product)
       toast.success("Added to cart successfully");
     } catch (error) {
       toast.error("Failed to add to cart");
@@ -65,28 +69,11 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left: Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-square bg-white rounded-lg overflow-hidden">
-              <img 
-                src={product.images?.[0]}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="grid grid-cols-4 gap-4">
-              {product.images?.slice(1).map((image, i) => (
-                <div key={i} className="aspect-square bg-white rounded-lg overflow-hidden">
-                  <img
-                    src={image}
-                    alt={`${product.name} view ${i + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
+              <ProductGallery images={product.images} name={product.name}/>
           </div>
 
           {/* Right: Product Info */}

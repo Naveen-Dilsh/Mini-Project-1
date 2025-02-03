@@ -26,6 +26,7 @@ const ProductCard = ({ product }) => {
     try {
       addToCart(product);
       toast.success("Added to cart successfully");
+      console.log(product)
     } catch (error) {
       toast.error("Failed to add to cart");
       console.error("Error adding to cart:", error);

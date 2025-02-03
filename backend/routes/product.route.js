@@ -3,12 +3,12 @@ import {createProducts, getAllProducts, getFeaturedProducts, getFeaturedProductB
 const router = express.Router();
 
 router.get("/", getAllProducts)
-router.get("/:id",getProductsById)
 router.get("/featured",getFeaturedProducts)
+router.get('/recommended-items', getRecommendedItems);
 router.get("/category/:category",getFeaturedProductByCategory)
+router.get("/:id",getProductsById)
 router.post("/",createProducts)
 router.patch("/:id",toggleFeaturedProduct)
-router.delete("/:id",deleteProduct)
-router.get('/recommended-items', getRecommendedItems);
+router.delete("/:id",deleteProduct);
 
 export default router;

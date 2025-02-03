@@ -1,112 +1,186 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MoveRight } from 'lucide-react';
 
-const WeddingSuitsHero = () => {
-  const images = [
-    "/Coat 1.png",
-    "/Coat 2.png",
-    "/Coat 3.png",
-    "/Coat 6.webp",
-    "/Coat 5.webp",
-    "/Coat 7.webp",
+const HeroSection = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      title: "Architectural Elegance",
+      subtitle: "DESIGN MASTERPIECE",
+      description: "Crafting extraordinary spaces that transcend conventional boundaries, where every line tells a story of innovation and precision.",
+      image: "/Groom 1.jpg",
+      accentColor: "border-gold-500 text-gold-500"
+    },
+    {
+      title: "Modern Sophistication",
+      subtitle: "VISIONARY CONCEPTS",
+      description: "Transforming environments through intelligent design, blending cutting-edge technology with timeless aesthetic principles.",
+      image: "/Groom 2.jpg",
+      accentColor: "border-platinum-500 text-platinum-500"
+    },
+    {
+      title: "Urban Harmony",
+      subtitle: "CONTEMPORARY LIVING",
+      description: "Redefining spatial experiences with meticulously crafted environments that celebrate the intersection of form and function.",
+      image: "/Groom 3.jpg",
+      accentColor: "border-silver-500 text-silver-500"
+    }
   ];
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const pageVariants = {
+    initial: { opacity: 0, y: 50 },
+    in: { opacity: 1, y: 0 },
+    out: { opacity: 0, y: -50 }
+  };
+
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.5
+  };
+
+  const imageVariants = {
+    initial: { opacity: 0, scale: 1.1 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 }
+  };
+
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex items-center relative overflow-hidden pt-16">
-      {/* Decorative background elements */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-[#C6A85C]/5 rounded-full blur-xl"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#800020]/5 rounded-full blur-xl"></div>
+    <motion.div 
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+      className="relative h-screen w-full flex flex-col md:flex-row overflow-hidden"
+    >
+      {/* Image Section (moves to top on mobile) */}
+      <div className="w-full md:w-3/4 h-1/2 md:h-full relative top-12 sm:top-16 md:top-0 overflow-hidden order-first md:order-last">
+        <AnimatePresence mode="wait">
+          {slides.map((slide, index) => (
+            index === currentSlide && (
+              <motion.div
+                key={index}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={imageVariants}
+                transition={{ duration: 1 }}
+                className="absolute inset-0"
+              >
+                <img 
+                  src={slide.image} 
+                  alt={slide.title}
+                  className="w-full h-full object-cover"
+                />
+                {/* Subtle Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+              </motion.div>
+            )
+          ))}
+        </AnimatePresence>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left Column - Luxurious Text Content */}
-          <div className="space-y-6">
-            {/* Refined header section */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <div className="h-[1px] w-12 bg-[#C6A85C]"></div>
-                <span className="text-[#C6A85C] font-serif italic text-lg tracking-wider uppercase">Haute Couture</span>
-              </div>
-              <h1 className="text-6xl lg:text-7xl font-serif text-[#0A2647] leading-tight">
-                <span className="block">Artisanal</span>
-                <span className="block mt-2 text-[#C6A85C] font-light italic">Masterpieces</span>
-              </h1>
-            </div>
-            
-            {/* Refined description */}
-            <div className="space-y-6">
-              <p className="text-[#2C3333] text-xl leading-relaxed max-w-xl font-light tracking-wide">
-                Experience the epitome of bespoke craftsmanship, where each stitch tells 
-                a story of unparalleled excellence and timeless sophistication.
-              </p>
-              <p className="text-[#2C3333]/80 text-lg leading-relaxed max-w-xl font-light">
-                Our atelier brings together centuries of tailoring heritage with contemporary 
-                elegance to create wedding suits that transcend fashion.
-              </p>
-            </div>
-            
-            {/* Enhanced CTA section */}
-            <div className="space-y-8">
-              <div className="flex flex-col sm:flex-row gap-6">
-                <button className="px-10 py-5 bg-[#0A2647] text-white hover:bg-[#0A2647]/90 transition-all duration-300 rounded-none shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                  <span className="text-lg tracking-wider uppercase">Private Consultation</span>
-                </button>
-                <button className="group px-10 py-5 border-2 border-[#C6A85C] text-[#C6A85C] hover:bg-[#C6A85C] hover:text-white transition-all duration-300 rounded-none shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                  <span className="text-lg tracking-wider uppercase">View Anthology</span>
-                </button>
-              </div>
-
-              {/* Luxury indicators */}
-              <div className="flex items-center space-x-8">
-                <div className="flex items-center space-x-4">
-                  <div className="w-8 h-8 rounded-full border-2 border-[#C6A85C] flex items-center justify-center">
-                    <div className="w-2 h-2 bg-[#C6A85C] rounded-full"></div>
-                  </div>
-                  <span className="text-[#2C3333] font-serif italic">Bespoke Excellence</span>
-                </div>
-                <div className="h-[1px] w-16 bg-[#C6A85C]"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column - Symphony Grid */}
-          <div className="relative">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 relative z-10">
-              {images.map((src, index) => (
-                <div 
-                  key={index} 
-                  className={`relative group ${
-                    index === 0 ? 'col-span-2 row-span-2 md:col-span-1 md:row-span-1' :
-                    index === 1 ? 'md:translate-y-16' :
-                    index === 3 ? 'md:-translate-y-16' :
-                    index === 4 ? 'md:translate-y-8' : ''
-                  }`}
+      {/* Content Section (moves to bottom on mobile) */}
+      <div className="w-full md:w-1/4 bg-black text-white flex items-center justify-center relative z-10 h-1/2 md:h-full order-last md:order-first">
+        <div className="w-full px-4 md:px-6 lg:px-8 py-8 max-w-md">
+          <AnimatePresence mode="wait">
+            {slides.map((slide, index) => (
+              index === currentSlide && (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0 px-4 md:px-6 lg:px-8 py-8 flex flex-col justify-center"
                 >
-                  <div className="overflow-hidden rounded-none shadow-xl">
-                    <img
-                      src={src}
-                      alt={`Luxury Wedding Suit ${index + 1}`}
-                      className="w-full h-72 object-cover transform transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0A2647]/30 group-hover:opacity-0 transition-opacity duration-500"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  {/* Subtitle with Accent */}
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className={`flex items-center space-x-4 mb-4 ${slide.accentColor}`}
+                  >
+                    <div className="w-8 h-[1px] bg-current opacity-60" />
+                    <span className="text-xs tracking-[0.3em] uppercase opacity-80">
+                      {slide.subtitle}
+                    </span>
+                  </motion.div>
 
-            {/* Decorative Elements */}
-            <div className="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2">
-              <div className="w-32 h-32 border-2 border-[#C6A85C]/20 rounded-full"></div>
-            </div>
-            <div className="absolute bottom-0 left-0 transform -translate-x-1/2 translate-y-1/2">
-              <div className="w-48 h-48 border-2 border-[#800020]/20 rounded-full"></div>
-            </div>
-          </div>
+                  {/* Title */}
+                  <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-thin text-white/90 mb-4 whitespace-pre-line leading-tight"
+                  >
+                    {slide.title}
+                  </motion.h1>
+
+                  {/* Description */}
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-sm sm:text-base md:text-base text-white/70 mb-6 leading-relaxed"
+                  >
+                    {slide.description}
+                  </motion.p>
+
+                  {/* Call to Action */}
+                  <motion.button 
+                    initial={{ opacity: 0, }}
+                    animate={{ opacity: 1,  }}
+                    transition={{ delay: 1 }}
+                    className={`
+                      group relative inline-flex items-center px-6 py-3 
+                      border ${slide.accentColor} 
+                      text-xs sm:text-sm tracking-wider
+                      hover:bg-white/10 transition-all duration-300
+                    `}
+                  >
+                    <span>Explore More</span>
+                    <MoveRight 
+                      className="ml-2 group-hover:translate-x-1 transition-transform" 
+                      size={16} 
+                    />
+                  </motion.button>
+
+                  {/* Slide Counter */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="absolute bottom-4 left-0 w-full px-4 md:px-6 lg:px-8"
+                  >
+                    <div className="flex items-center space-x-4 text-white/60">
+                      <span className="text-xl font-light">
+                        {String(currentSlide + 1).padStart(2, '0')}
+                      </span>
+                      <div className="w-8 h-[1px] bg-white/30" />
+                      <span className="text-base">
+                        {String(slides.length).padStart(2, '0')}
+                      </span>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )
+            ))}
+          </AnimatePresence>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-export default WeddingSuitsHero;
+export default HeroSection;
