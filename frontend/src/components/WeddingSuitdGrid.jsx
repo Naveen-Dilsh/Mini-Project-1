@@ -1,9 +1,9 @@
 import React from 'react';
 import { Crown, Sparkles, DiamondIcon, Scissors } from 'lucide-react';
 
-const LuxuryWeddingSuitsGrid = () => {
+const WeddingSuitsGrid = () => {
   return (
-    <div className="container mx-auto px-4 py-4">
+    <div className="bg-gradient-to-br from-neutral-800 to-neutral-900 px-4 py-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-4xl mx-auto">
         {/* First Square - Luxe Full Image */}
         <div className="relative group overflow-hidden rounded-lg">
@@ -105,4 +105,4 @@ const LuxuryWeddingSuitsGrid = () => {
   );
 };
 
-export default LuxuryWeddingSuitsGrid;
+export default WeddingSuitsGrid;
