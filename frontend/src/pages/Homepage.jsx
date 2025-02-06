@@ -5,6 +5,7 @@ import Steps from '../components/Steps'
 import Testimonial from '../components/Testimonial'
 import BestOutfits from '../components/BestOutfits'
 import WeddingShowcase from '../components/WeddingShowcase'
+import WeddingSuitsGrid from '../components/WeddingSuitdGrid'
 
 
 
@@ -13,6 +14,7 @@ const Homepage = () => {
     <>
         <HeroSection/>
         <WeddingShowcase/>
+        <WeddingSuitsGrid/>
         <Guarantee/>
         <Steps/>
         <Testimonial/>
