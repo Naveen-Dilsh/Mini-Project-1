@@ -16,7 +16,7 @@ const Homepage = () => {
         <WeddingShowcase/>
         <WeddingSuitsGrid/>
         <Guarantee/>
-        <Steps/>
+        {/* <Steps/> */}
         <Testimonial/>
     </>
   )
