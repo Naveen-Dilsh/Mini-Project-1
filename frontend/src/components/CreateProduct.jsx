@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Package, DollarSign, AlignLeft, List, ImagePlus, Loader, Check,X } from 'lucide-react';
+import { Package, DollarSign, AlignLeft, List, ImagePlus, Loader, Check, X, Palette, Layers } from 'lucide-react';
 import { useProductStore } from '../stores/useProductStore';
 
 const CreateProduct = () => {
     const { createProducts, loading } = useProductStore();
     
-    // Feature mapping based on category
     const featuresByCategory = {
         'Suits': [
             "High-Performance Processor",
@@ -27,8 +26,7 @@ const CreateProduct = () => {
             "Waterproof Design", 
             "Long Battery Life",
             "Sleep Tracking"
-        ],
-        
+        ]
     };
 
     const [productData, setProductData] = useState({
@@ -36,16 +34,18 @@ const CreateProduct = () => {
         price: '',
         description: '',
         category: '',
+        fabricType: '',
+        color: '',
         images: [],
-        specialFeatures: [] // New array to store selected features
+        specialFeatures: []
     });
-    const [imagesPreviews, setImagesPreviews] = useState([]); // State for image previews
+    const [imagesPreviews, setImagesPreviews] = useState([]);
     const categories = [
         { value: '', label: 'Select Category' },
         { value: 'Suits', label: 'Suits' },
         { value: 'Shirts', label: 'Shirts' },
         { value: 'Blazers', label: 'Blazers' },
-        { value: 'Monitor', label: 'Monitor' }
+        { value: 'OverCoats', label: 'OverCoats' }
     ];
 
     const handleInputChange = (e) => {
@@ -57,32 +57,31 @@ const CreateProduct = () => {
     };
 
     const handleImagesChange = (e) => {
-      const files = Array.from(e.target.files);
-      
-      // Process each file
-      files.forEach(file => {
-          const reader = new FileReader();
-          reader.onload = () => {
-              setProductData(prev => ({
-                  ...prev,
-                  images: [...prev.images, reader.result]
-              }));
-              setImagesPreviews(prev => [...prev, {
-                  url: reader.result,
-                  name: file.name
-              }]);
-          };
-          reader.readAsDataURL(file);
-      });
-  };
+        const files = Array.from(e.target.files);
+        
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setProductData(prev => ({
+                    ...prev,
+                    images: [...prev.images, reader.result]
+                }));
+                setImagesPreviews(prev => [...prev, {
+                    url: reader.result,
+                    name: file.name
+                }]);
+            };
+            reader.readAsDataURL(file);
+        });
+    };
 
-  const removeImage = (index) => {
-      setProductData(prev => ({
-          ...prev,
-          images: prev.images.filter((_, i) => i !== index)
-      }));
-      setImagesPreviews(prev => prev.filter((_, i) => i !== index));
-  };
+    const removeImage = (index) => {
+        setProductData(prev => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index)
+        }));
+        setImagesPreviews(prev => prev.filter((_, i) => i !== index));
+    };
 
     const handleFeatureToggle = (feature) => {
         setProductData(prev => {
@@ -98,7 +97,7 @@ const CreateProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Validate form
-        if (!productData.name || !productData.price || !productData.category || productData.images.length === 0) {
+        if (!productData.name || !productData.price || !productData.category || !productData.fabricType || !productData.color || productData.images.length === 0) {
             alert('Please fill in all required fields');
             return;
         }
@@ -110,6 +109,8 @@ const CreateProduct = () => {
                 description: "", 
                 price: "", 
                 category: "", 
+                fabricType: "",
+                color: "",
                 images: [],
                 specialFeatures: [] 
             });
@@ -131,92 +132,133 @@ const CreateProduct = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-2">
-                    {/* Product Name Input */}
+                  {/* Product Name Input */}
+                                      <div className="relative">
+                                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                                          Product Name
+                                        </label>
+                                        <div className="relative">
+                                          <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            value={productData.name}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                            placeholder="Enter product name"
+                                          />
+                                          <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                        </div>
+                                      </div>
+                  
+                                      {/* Price Input */}
+                                      <div className="relative">
+                                        <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
+                                          Price
+                                        </label>
+                                        <div className="relative">
+                                          <input
+                                            type="number"
+                                            id="price"
+                                            name="price"
+                                            value={productData.price}
+                                            onChange={handleInputChange}
+                                            required
+                                            min="0"
+                                            step="0.01"
+                                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                            placeholder="Enter price"
+                                          />
+                                          <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                        </div>
+                                      </div>
+                  
+                                      {/* Description Input */}
+                                      <div className="relative">
+                                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                                          Description
+                                        </label>
+                                        <div className="relative">
+                                          <textarea
+                                            id="description"
+                                            name="description"
+                                            value={productData.description}
+                                            onChange={handleInputChange}
+                                            rows={3}
+                                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                            placeholder="Enter product description"
+                                          />
+                                          <AlignLeft className="absolute left-3 top-3 text-gray-400" size={20} />
+                                        </div>
+                                      </div>
+                  
+                                      {/* Category Dropdown */}
+                                      <div className="relative">
+                                        <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                                          Category
+                                        </label>
+                                        <div className="relative">
+                                          <select
+                                            id="category"
+                                            name="category"
+                                            value={productData.category}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                          >
+                                            {categories.map((cat) => (
+                                              <option key={cat.value} value={cat.value}>
+                                                {cat.label}
+                                              </option>
+                                            ))}
+                                          </select>
+                                          <List className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                        </div>
+                                      </div>
+                                      
+
+                    {/* Fabric Type Input */}
                     <div className="relative">
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                        Product Name
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={productData.name}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                          placeholder="Enter product name"
-                        />
-                        <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                      </div>
+                        <label htmlFor="fabricType" className="block text-sm font-medium text-gray-700 mb-1">
+                            Fabric Type
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="text"
+                                id="fabricType"
+                                name="fabricType"
+                                value={productData.fabricType}
+                                onChange={handleInputChange}
+                                required
+                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                placeholder="Enter fabric type"
+                            />
+                            <Layers className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        </div>
                     </div>
 
-                    {/* Price Input */}
+                    {/* Color Input */}
                     <div className="relative">
-                      <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
-                        Price
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="number"
-                          id="price"
-                          name="price"
-                          value={productData.price}
-                          onChange={handleInputChange}
-                          required
-                          min="0"
-                          step="0.01"
-                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                          placeholder="Enter price"
-                        />
-                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                      </div>
+                        <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-1">
+                            Color
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="text"
+                                id="color"
+                                name="color"
+                                value={productData.color}
+                                onChange={handleInputChange}
+                                required
+                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                placeholder="Enter color"
+                            />
+                            <Palette className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        </div>
                     </div>
 
-                    {/* Description Input */}
-                    <div className="relative">
-                      <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                        Description
-                      </label>
-                      <div className="relative">
-                        <textarea
-                          id="description"
-                          name="description"
-                          value={productData.description}
-                          onChange={handleInputChange}
-                          rows={3}
-                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                          placeholder="Enter product description"
-                        />
-                        <AlignLeft className="absolute left-3 top-3 text-gray-400" size={20} />
-                      </div>
-                    </div>
-
-                    {/* Category Dropdown */}
-                    <div className="relative">
-                      <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-                        Category
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="category"
-                          name="category"
-                          value={productData.category}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                        >
-                          {categories.map((cat) => (
-                            <option key={cat.value} value={cat.value}>
-                              {cat.label}
-                            </option>
-                          ))}
-                        </select>
-                        <List className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                      </div>
-                    </div>
-                    
-                    {/* Special Features Section */}
+                    {/* Rest of the form remains the same */}
                     {productData.category && (
                         <div className="relative">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -243,8 +285,9 @@ const CreateProduct = () => {
                             </div>
                         </div>
                     )}
-                     {/* Multiple Images Upload */}
-                     <div className="relative">
+
+                    {/* Images and Submit Button sections remain unchanged */}
+                    <div className="relative">
                         <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">
                             Product Images
                         </label>
@@ -261,7 +304,6 @@ const CreateProduct = () => {
                             <ImagePlus className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                         </div>
 
-                        {/* Image Previews */}
                         {imagesPreviews.length > 0 && (
                             <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {imagesPreviews.map((image, index) => (
@@ -284,8 +326,6 @@ const CreateProduct = () => {
                         )}
                     </div>
 
-
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center justify-center gap-2 font-semibold"

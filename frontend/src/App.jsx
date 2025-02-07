@@ -18,6 +18,9 @@ import PurchaseSuccessPage from "./pages/PurchaseSuccessPage"
 import PurchaseCancelPage from "./pages/PurchaseCancelPage"
 import Guarantee from "./components/Gurantee"
 import CollectionPage2 from "./pages/CollectionPage2"
+import Footer from "./components/Footer"
+import SizeGuidePage from "./pages/SizeGuidePage"
+import ContactUsPage from "./pages/ContactUs"
 
 
 
@@ -46,6 +49,8 @@ function App() {
         {/* <Route path="/signup" element={!user ?<SignupPage/>:<Navigate to ="/"/>}/> */}
         <Route path="/signup" element={<SignupPage/>}/>
         <Route path="/login" element={!user ?<LoginPage/>:<Navigate to="/"/>}/>
+        <Route path="/size-guide" element={<SizeGuidePage/>}/>
+        <Route path="/contact" element={<ContactUsPage/>}/>
         <Route path="/collection" element={<CollectionPage2/>}/>
         <Route path="/category/:category" element={<CategoryPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
@@ -61,6 +66,7 @@ function App() {
 						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}
 					/>
       </Routes>
+      <Footer/>
       <Toaster/>
     </>
   )

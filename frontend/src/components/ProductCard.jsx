@@ -1,4 +1,3 @@
-// ProductCard.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Heart, Star } from "lucide-react";
@@ -26,7 +25,7 @@ const ProductCard = ({ product }) => {
     try {
       addToCart(product);
       toast.success("Added to cart successfully");
-      console.log(product)
+      console.log(product);
     } catch (error) {
       toast.error("Failed to add to cart");
       console.error("Error adding to cart:", error);
@@ -59,44 +58,30 @@ const ProductCard = ({ product }) => {
             <img 
               src={primaryImage}
               alt={product.name}
-              className={`absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out
-                ${isHovered ? 'scale-110' : 'scale-100'}`}
+              className={`absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-in-out
+                ${isHovered ? '-translate-x-full opacity-0' : 'translate-x-0 opacity-100'}`}
             />
           )}
+         
           {secondaryImage && (
             <img 
               src={secondaryImage}
               alt={`${product.name} alternate view`}
-              className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-out
-                ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-in-out
+                ${isHovered ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
             />
           )}
-          
-          {/* Overlay */}
-          <div 
-            className={`absolute inset-0 transition-opacity duration-500
-              ${isHovered ? 'opacity-20' : 'opacity-0'}`} 
-          />
-
-          {/* Favorite Button */}
-          <button 
-            onClick={handleFavorite}
-            className={`absolute top-4 right-4 z-10 p-2 rounded-full 
-              ${isFavorite ? 'bg-red-500 text-white' : 'bg-white/80'} 
-              transition-all duration-300 hover:scale-110`}
-          >
-            <Heart 
-              size={20} 
-              fill={isFavorite ? 'currentColor' : 'none'}
-              strokeWidth={isFavorite ? 0 : 1.5}
-            />
-          </button>
+           {secondaryImage && (
+            <div className={`absolute inset-0 w-full h-full flex items-center justify-center text-white text-lg font-extrabold tracking-wide leading-relaxed italic uppercase transition-opacity duration-700 ease-in-out ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+              {product.name}
+            </div>
+          )}
         </div>
 
         {/* Product Info */}
         <div className="p-4 bg-white">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-medium text-gray-900 line-clamp-2">
+            <h3 className="text-small font-medium text-gray-900 line-clamp-2 text-neutral-500 leading-relaxed italic">
               {product.name}
             </h3>
             <div className="flex items-center">

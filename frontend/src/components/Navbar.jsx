@@ -69,7 +69,7 @@ const Navbar = () => {
               <span className="font-light">Book Fitting</span>
             </Link>
             
-            <Link to="/measurements" className="text-gray-600 hover:text-rose-600 transition-colors flex items-center space-x-2">
+            <Link to="/size-guide" className="text-gray-600 hover:text-rose-600 transition-colors flex items-center space-x-2">
               <Ruler size={18} />
               <span className="font-light">Size Guide</span>
             </Link>

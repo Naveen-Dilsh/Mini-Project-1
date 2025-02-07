@@ -11,7 +11,7 @@ const TestimonialCarousel = () => {
       id: 1,
       name: "Sarah Johnson",
       role: "Bride",
-      image: "/api/placeholder/64/64",
+      image: "/User 1.jpg",
       rating: 5,
       text: "The coat exceeded all my expectations! The quality and attention to detail made me feel absolutely stunning on my winter wedding day."
     },
@@ -19,7 +19,7 @@ const TestimonialCarousel = () => {
       id: 2,
       name: "Emily Davis",
       role: "Winter Bride",
-      image: "/api/placeholder/64/64",
+      image: "/User 1.jpg",
       rating: 5,
       text: "I received so many compliments on my wedding coat. The fit was perfect and the material was luxurious. It added such a magical touch to my winter wonderland theme."
     },
@@ -27,7 +27,7 @@ const TestimonialCarousel = () => {
       id: 3,
       name: "Michelle Wong",
       role: "Bride",
-      image: "/api/placeholder/64/64",
+      image: "/User 1.jpg",
       rating: 5,
       text: "The perfect addition to my December wedding! The coat was both practical and beautiful. The team was amazing with alterations."
     },
@@ -35,7 +35,7 @@ const TestimonialCarousel = () => {
       id: 4,
       name: "Jessica Smith",
       role: "Bride",
-      image: "/api/placeholder/64/64",
+      image: "/User 1.jpg",
       rating: 5,
       text: "Absolutely perfect for my mountain wedding! The coat kept me warm during outdoor photos while looking incredibly elegant."
     },
@@ -43,7 +43,7 @@ const TestimonialCarousel = () => {
       id: 5,
       name: "Rachel Brown",
       role: "Winter Bride",
-      image: "/api/placeholder/64/64",
+      image: "/User 1.jpg",
       rating: 5,
       text: "The craftsmanship is outstanding. This coat made my winter wedding photos look like a fairytale come true."
     },
@@ -51,7 +51,7 @@ const TestimonialCarousel = () => {
       id: 6,
       name: "Laura Chen",
       role: "Bride",
-      image: "/api/placeholder/64/64",
+      image: "/User 1.jpg",
       rating: 5,
       text: "Such a beautiful addition to my wedding outfit. The details are exquisite and it photographed beautifully in the snow."
     }
