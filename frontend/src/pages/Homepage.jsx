@@ -6,6 +6,8 @@ import Testimonial from '../components/Testimonial'
 import BestOutfits from '../components/BestOutfits'
 import WeddingShowcase from '../components/WeddingShowcase'
 import WeddingSuitsGrid from '../components/WeddingSuitdGrid'
+import WeddingHeroOverlay from '../components/Overlay'
+import Overlay from '../components/Overlay'
 
 
 
@@ -17,6 +19,7 @@ const Homepage = () => {
         <WeddingSuitsGrid/>
         <Guarantee/>
         {/* <Steps/> */}
+        <Overlay/>
         <Testimonial/>
     </>
   )
