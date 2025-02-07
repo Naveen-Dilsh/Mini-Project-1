@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Shield, Award, Star, CheckCircle } from 'lucide-react';
 
-const Guarantee = () => {
+const WeddingSuitShowcase = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const images = [
-    {
-      src: "/Coat 1.png",
-      alt: "Suit model 1"
-    },
-    {
-      src: "/Coat 2.png",
-      alt: "Suit model 2"
-    },
-    {
+  const suits = [
+    { 
       src: "/Linen 1.png",
-      alt: "Suit model 3"
+      alt: "Classic Black Tuxedo",
+      name: "Classic Black Tuxedo",
+      price: "899"
     },
-    {
-      src: "/Coat 3.png",
-      alt: "Suit model 3"
+    { 
+      src: "/Coat 1.png",
+      alt: "Modern Navy Suit",
+      name: "Modern Navy Suit",
+      price: "749"
     },
-    {
+    { 
       src: "/Linen 2.webp",
-      alt: "Suit model 3"
-    }
+      alt: "Elegant White Suit",
+      name: "Elegant White Suit",
+      price: "999"
+    },
+  ];
+
+  const features = [
+    { icon: Shield, title: "Premium Fabrics", desc: "Crafted with the finest materials" },
+    { icon: Award, title: "Tailored Fit", desc: "Designed for ultimate comfort" },
+    { icon: Star, title: "Exclusive Designs", desc: "Stand out on your special day" },
+    { icon: CheckCircle, title: "Satisfaction Guarantee", desc: "Ensuring the perfect look" }
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      handleImageChange((currentImage + 1) % images.length);
-    }, 4000);
+      handleImageChange((currentImage + 1) % suits.length);
+    }, 5000);
     return () => clearInterval(timer);
   }, [currentImage]);
 
@@ -43,99 +48,114 @@ const Guarantee = () => {
     }, 300);
   };
 
-  const nextImage = () => {
-    handleImageChange((currentImage + 1) % images.length);
-  };
-
-  const prevImage = () => {
-    handleImageChange(currentImage === 0 ? images.length - 1 : currentImage - 1);
+  const navigate = (direction) => {
+    const newIndex = direction === 'next'
+      ? (currentImage + 1) % suits.length
+      : currentImage === 0 ? suits.length - 1 : currentImage - 1;
+    handleImageChange(newIndex);
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col md:flex-row bg-gradient-to-b from-[#F8F9FA] to-[#E5E5E5]">
-      {/* Left side - Image Carousel */}
-      <div className="relative w-full md:w-1/2 h-[80vh] md:h-screen overflow-hidden">
-        {/* Image Container */}
-        <div className="relative h-full w-full">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 w-full h-full flex items-start justify-center transition-opacity duration-300 ${
-                currentImage === index 
-                  ? 'opacity-100 z-10' 
-                  : 'opacity-0 z-0'
-              } ${isTransitioning ? 'scale-105' : 'scale-100'}`}
-              style={{
-                transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out'
-              }}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="h-[150%] w-auto max-w-none object-cover"
-                style={{
-                  objectPosition: 'top'
-                }}
-              />
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-neutral-100 to-stone-100">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left side - Suit Details */}
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-sm text-amber-700 uppercase tracking-wider font-medium">
+                Exclusive Wedding Collection
+              </h2>
+              <h1 className="text-5xl font-bold text-stone-800">
+                {suits[currentImage].name}
+              </h1>
+              <div className="h-1 w-24 bg-amber-600 rounded-full"></div>
+              <p className="text-xl text-stone-600 font-light leading-relaxed">
+                Elevate your wedding look with our premium collection of suits, 
+                designed for elegance, comfort, and sophistication. 
+                Make your special day truly unforgettable.
+              </p>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Right side - Enhanced Text Content */}
-      <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-gradient-to-br from-white to-[#F8F9FA]">
-        {/* Luxury Brand Label */}
-        <div className="mb-6">
-          <p className="text-[#C6A85C] uppercase tracking-[0.2em] text-sm font-medium mb-2">
-            Bespoke Tailoring
-          </p>
-        </div>
+            {/* Features Grid */}
+            <div className="grid grid-cols-2 gap-6">
+              {features.map((feature, index) => (
+                <div key={index} className="p-4 rounded-lg bg-white shadow-lg border border-stone-100">
+                  <feature.icon className="h-6 w-6 text-amber-600 mb-2" />
+                  <h3 className="font-medium text-lg text-stone-800">{feature.title}</h3>
+                  <p className="text-stone-600 text-sm">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
 
-        {/* Main Heading with Enhanced Typography */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-4 text-[#0A2647] leading-tight">
-          Fit to
-          <span className="block font-bold">Perfection</span>
-          <span className="font-medium">Guaranteed</span>
-        </h1>
-
-        {/* Elegant Divider */}
-        <div className="w-24 h-0.5 bg-[#C6A85C] my-8"></div>
-
-        {/* Enhanced Description */}
-        <p className="text-lg text-[#2C3333] mb-12 leading-relaxed font-light tracking-wide">
-          From the finest fabrics and artisanal buttons to bespoke pocket styles 
-          and signature lining colors, every detail is meticulously crafted to 
-          your preferences. Experience true sartorial excellence with our
-          Perfect Fit Guarantee.
-        </p>
-
-        {/* Pricing Section with Enhanced Layout */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 mb-8">
-          <div>
-            <p className="text-[#2C3333] uppercase tracking-wider text-sm mb-1">Starting Price</p>
-            <p className="text-3xl font-light text-[#0A2647]">
-              from <span className="font-medium">299€</span>
-            </p>
+            {/* Price and CTA */}
+            {/* <div className="space-y-6">
+              <div className="flex items-end gap-2">
+                <span className="text-stone-500 text-xl">Starting at</span>
+                <span className="text-4xl font-bold text-amber-700">${suits[currentImage].price}</span>
+              </div>
+              <div className="flex gap-4">
+                <button className="px-8 py-3 bg-amber-700 text-white rounded-lg font-medium 
+                  hover:bg-amber-600 transition-colors duration-300 shadow-lg">
+                  Book Fitting
+                </button>
+                <button className="px-8 py-3 border border-amber-700 text-amber-700 rounded-lg 
+                  font-medium hover:bg-amber-50 transition-colors duration-300">
+                  View Details
+                </button>
+              </div>
+            </div> */}
           </div>
-          
-          {/* Vertical Divider for Desktop */}
-          <div className="hidden sm:block w-0.5 h-12 bg-[#C6A85C]/20"></div>
 
-          {/* CTA Button with Enhanced Styling */}
-          <button className="px-8 py-4 bg-[#0A2647] text-white rounded-none hover:bg-[#C6A85C] transition-colors duration-300 uppercase tracking-wider text-sm font-medium shadow-lg hover:shadow-xl">
-            Design Your Suit
-          </button>
-        </div>
-
-        {/* Additional Trust Element */}
-        <div className="mt-8 pt-8 border-t border-[#C6A85C]/20">
-          <p className="text-sm text-[#2C3333]/80 uppercase tracking-wider">
-            Trusted by discerning gentlemen worldwide
-          </p>
+          {/* Right side - Image Showcase */}
+          <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
+            {suits.map((suit, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-all duration-500 ease-in-out
+                  ${currentImage === index ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}
+                  ${isTransitioning ? 'blur-sm' : 'blur-0'}`}
+              >
+                <img
+                  src={suit.src}
+                  alt={suit.alt}
+                  className="w-full h-full object-contain"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 to-transparent"></div>
+              </div>
+            ))}
+            
+            {/* Navigation Controls */}
+            {/* <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
+              <button
+                onClick={() => navigate('prev')}
+                className="p-2 rounded-full bg-white/80 hover:bg-amber-600 hover:text-white
+                  transition-colors duration-300 text-amber-700"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <div className="flex gap-2">
+                {suits.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleImageChange(index)}
+                    className={`h-2 rounded-full transition-all duration-300 
+                      ${currentImage === index ? 'w-8 bg-amber-600' : 'w-2 bg-white/80'}`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={() => navigate('next')}
+                className="p-2 rounded-full bg-white/80 hover:bg-amber-600 hover:text-white
+                  transition-colors duration-300 text-amber-700"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            </div> */}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Guarantee;
+export default WeddingSuitShowcase;
