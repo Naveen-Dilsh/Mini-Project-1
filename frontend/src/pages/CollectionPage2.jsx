@@ -56,55 +56,54 @@ const CollectionPage2 = () => {
       ]
     },
     {
-      image: "/Col 1.png",
-      title: "Custom Suits",
+      image: "/Wool 1.webp",
+      title: "Wool Overcoats",
       price: "from 219€",
-      mainCategory: "/Suits",
+      mainCategory: "/Overcoats",
       categories: [
         // "Custom Suits",
-        "Peaky Blinders Suits",
-        "Cocktail Suit",
-        "Big and Tall Suits",
-        "Blue Suits",
-        "Gray Suits",
-        "Pinstripe Suit",
-        "Business Suits",
-        "Prince of Wales Suits",
-        "Nehru Suits"
+        "Men's Wool Overcoats",
+        "Double Breasted Overcoats",
+        "Pea Coats",
+        "Duffle Coats",
+        "Funnel Neck Coats",
+        "Alpaca Coats",
+        "Big and Tall Coats",
+        "Trench Coats",
+        "Big and Tall Trench Coats"
       ]
     },
     {
-      image: "/Col 3.png",
-      title: "Custom Dress Shirts",
+      image: "/Tuxedo.webp",
+      title: "Tuxedos",
       price: "from 49€",
-      mainCategory: "/Shirts",
+      mainCategory: "/Tuxedos",
       categories: [
         // "Custom Dress Shirts",
-        "Grandad Collar Shirt",
-        "White Tie Shirts",
-        "Oxford Shirts",
-        "Mao Shirts",
-        "Checkered Shirts",
-        "Linen Shirts",
-        "Short Sleeve Dress Shirts",
-        "Tuxedo Shirts"
+        "Velvet Tuxedos",
+        "Double Breasted Tuxedos",
+        "Burgundy Tuxedos",
+        "White Tuxedos",
+        "Gray Tuxedos",
+        "Tuxedo Shirts",
+        "Tuxedo vests",
       ]
     },
     {
-      image: "/Col 2.png",
-      title: "Custom Blazers",
+      image: "/Trench.webp",
+      title: "Trench Coats",
       price: "from 149€",
-      mainCategory: "/Blazers",
+      mainCategory: "/Trench",
       categories: [
         // "Custom Blazers",
-        "Linen Clothing",
-        "Dinner Jacket",
-        "Nehru Jackets",
-        "Seersucker Jackets",
-        "Red Blazers",
-        "Linen Blazers",
-        "Cotton Blazers",
-        "Velvet Blazers"
+        "Trench Coats",
+        "Big and Tall Trench Coats",
+        "Field Jackets",
+        "Double Breasted Trench Coats",
+        "Single Breasted Trench Coats",
+        "Short Trench Coats",
+        "Long Trench Coats",
+        "Military Trench Coats",
       ]
     }
   ];

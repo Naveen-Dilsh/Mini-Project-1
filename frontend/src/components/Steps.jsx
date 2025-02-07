@@ -21,7 +21,7 @@ const Steps = () => {
   ];
 
   return (
-    <div className="w-full bg-gradient-to-b from-stone-50 to-stone-100 py-16 px-4">
+    <div className="w-full bg-gradient-to-b from-stone-50 to-stone-100 py-10 px-4">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-stone-800 mb-4">
           How to Choose Your Wedding Suit
