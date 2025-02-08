@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Crown, Sparkles, DiamondIcon, Scissors } from 'lucide-react';
 
+// Updated hook for repeatable animations
+const useScrollAnimation = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Update visibility based on intersection state
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.2,
+        // Optional: Add root margin to trigger animation slightly before element comes into view
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  return [ref, isVisible];
+};
+
 const WeddingSuitsGrid = () => {
+  const [secondColumnRef, secondColumnVisible] = useScrollAnimation();
+  const [thirdColumnRef, thirdColumnVisible] = useScrollAnimation();
+
   return (
     <div className="bg-gradient-to-br from-neutral-800 to-neutral-900 px-4 py-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-4xl mx-auto">
@@ -23,9 +58,13 @@ const WeddingSuitsGrid = () => {
         </div>
         
         {/* Second Square - Refined Collection Details */}
-        <div className="bg-gradient-to-br from-neutral-100 to-neutral-200 
-          flex flex-col justify-center items-center text-center p-4 
-          rounded-lg relative overflow-hidden">
+        <div
+          ref={secondColumnRef}
+          className={`bg-gradient-to-br from-neutral-100 to-neutral-200 
+            flex flex-col justify-center items-center text-center p-4 
+            rounded-lg relative overflow-hidden transform transition-all duration-700
+            ${secondColumnVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
+        >
           <div className="absolute inset-0 bg-white opacity-10 
             clip-path-polygon-[0%_0%,100%_0%,100%_85%,0%_100%]" />
           <div className="max-w-md relative z-10">
@@ -53,8 +92,12 @@ const WeddingSuitsGrid = () => {
         </div>
         
         {/* Third Square - Exclusive Customization */}
-        <div className="bg-white flex flex-col justify-center items-center 
-          text-center p-4 relative overflow-hidden rounded-lg">
+        <div
+          ref={thirdColumnRef}
+          className={`bg-white flex flex-col justify-center items-center 
+            text-center p-4 relative overflow-hidden rounded-lg transform transition-all duration-700
+            ${thirdColumnVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}`}
+        >
           <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 
             to-neutral-100 opacity-50 -z-10 
             clip-path-polygon-[20%_0%,100%_0%,100%_80%,0%_100%]" />

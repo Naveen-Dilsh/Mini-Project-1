@@ -87,11 +87,11 @@ const ProductDetails = () => {
               <div className="grid grid-cols-2 gap-2 md:gap-4">
                 <div>
                   <h3 className="text-xs md:text-sm uppercase tracking-wider text-neutral-400 mb-1 md:mb-2">Fabric</h3>
-                  <p className="text-neutral-700">Premium Wool Blend</p>
+                  <p className="text-neutral-700">{product.fabricType}</p>
                 </div>
                 <div>
                   <h3 className="text-xs md:text-sm uppercase tracking-wider text-neutral-400 mb-1 md:mb-2">Color</h3>
-                  <p className="text-neutral-700">Italian Craftsmanship</p>
+                  <p className="text-neutral-700">{product.color}</p>
                 </div>
               </div>
             </div>

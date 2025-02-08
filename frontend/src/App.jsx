@@ -21,6 +21,7 @@ import CollectionPage2 from "./pages/CollectionPage2"
 import Footer from "./components/Footer"
 import SizeGuidePage from "./pages/SizeGuidePage"
 import ContactUsPage from "./pages/ContactUs"
+import UserPage from "./pages/UserPage"
 
 
 
@@ -57,6 +58,8 @@ function App() {
         <Route path="/product-details" element={<ProductDetails/>}/>
         <Route path="/purchase-success" element={<PurchaseSuccessPage/>}/>
         <Route path="/purchase-cancel" element={<PurchaseCancelPage/>}/>
+
+        <Route path="/account" element={<UserPage/>}/>
 
         <Route path="/guarantee" element={<Guarantee/>}/> 
         {/* Change this line in your Routes */}
