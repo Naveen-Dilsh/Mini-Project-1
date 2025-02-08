@@ -73,7 +73,7 @@ const ProductCard = ({ product }) => {
           )}
            {secondaryImage && (
             <div className={`absolute inset-0 w-full h-full flex items-center justify-center text-white text-lg font-extrabold tracking-wide leading-relaxed italic uppercase transition-opacity duration-700 ease-in-out ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-              {product.name}
+              {product.color}
             </div>
           )}
         </div>

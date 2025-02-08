@@ -28,6 +28,14 @@ const productSchema = new mongoose.Schema(
             type:String,
             required:[true,"category is required"]
         },
+        fabricType:{
+            type:String,
+            required:[true,"fabric is required"]
+        },
+        color:{
+            type:String,
+            required:[true,"color is required"]
+        },
         isFeatured:{
             type:Boolean,
             default:false,

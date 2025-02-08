@@ -17,7 +17,7 @@ export const getAllProducts = async (req,res)=>{
 
 export const createProducts = async (req,res)=>{
     try {
-        const {name,price,images,description,category,specialFeatures} = req.body;
+        const {name,price,images,description,category,specialFeatures,fabricType,color} = req.body;
 
         const cloudinaryUrls = [];
 
@@ -36,6 +36,8 @@ export const createProducts = async (req,res)=>{
             price,
             images:cloudinaryUrls,
             category,
+            fabricType,
+            color,
         });
 
         res.status(201).json(product)
