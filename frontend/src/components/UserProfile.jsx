@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Camera, Lock, Edit2, Check, X } from "lucide-react";
+import { useUserStore } from "../stores/useUserStore";
+
 
 const Input = ({ className, ...props }) => (
   <input
@@ -22,6 +24,7 @@ const UserProfile = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [imageError, setImageError] = useState("");
   const fileInputRef = useRef(null);
+  const {user} = useUserStore();
   
   const [userData, setUserData] = useState({
     fullName: "Isabella Montgomery",
@@ -109,7 +112,7 @@ const UserProfile = () => {
               {imageError && (
                 <div className="text-red-500 text-sm">{imageError}</div>
               )}
-              <h3 className="text-xl font-medium text-gray-800">{userData.fullName}</h3>
+              <h3 className="text-xl font-medium text-gray-800">{user?.name}</h3>
               <p className="text-gray-500 text-sm">Member since 2024</p>
             </div>
 
@@ -119,21 +122,14 @@ const UserProfile = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-2">Full Name</label>
                   <Input 
-                    value={userData.fullName}
+                    value={user.name}
                     className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-2">Email</label>
                   <Input 
-                    value={userData.email}
-                    className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Phone</label>
-                  <Input 
-                    value={userData.phone}
+                    value={user.email}
                     className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
                   />
                 </div>

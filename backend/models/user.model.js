@@ -31,7 +31,11 @@ const userSchema = new mongoose.Schema(
                     ref:"Product"
                 },
             },
-        ]
+        ],
+        address :{
+            type:String,
+            default:"Null"
+        }
     },
     {
         timestamps:true,
