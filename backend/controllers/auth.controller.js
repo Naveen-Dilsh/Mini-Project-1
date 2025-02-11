@@ -1,3 +1,4 @@
+import cloudinary from "../lib/cloudinary.js";
 import { redis } from "../lib/redis.js";
 import User from "../models/user.model.js"
 import jwt from "jsonwebtoken"
@@ -145,4 +146,56 @@ export const refreshToken = async (req, res) => {
 		console.log("Error in refreshToken controller", error.message);
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
+};
+
+export const addImage = async (req, res) => {
+    const { image } = req.body;
+    const userId = req.user._id; // Assuming req.user contains the authenticated user
+
+    try {
+
+        // Upload image to Cloudinary
+        let cloudinaryResponse = null;
+        try {
+            cloudinaryResponse = await cloudinary.uploader.upload(image, {
+                folder: "users",
+                resource_type: "auto",
+                width: 150,
+                height: 150,
+                crop: "fill",
+                quality: "auto"
+            });
+        } catch (cloudinaryError) {
+            console.error("Cloudinary upload error:", cloudinaryError);
+            return res.status(400).json({ message: "Error uploading image" });
+        }
+
+        // Update user's image in database
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { image: cloudinaryResponse.secure_url },
+            { new: true, select: '-password' } // Return updated document and exclude password
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "Profile image updated successfully",
+            user: {
+                id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                image: updatedUser.image
+            }
+        });
+
+    } catch (error) {
+        console.error("Error in addImage controller:", error.message);
+        res.status(500).json({ 
+            message: "Server error while updating profile image",
+            error: error.message 
+        });
+    }
 };
