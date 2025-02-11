@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Camera, Lock, Edit2, Check, X } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
 
-
 const Input = ({ className, ...props }) => (
   <input
     className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 ${className}`}
@@ -36,6 +35,8 @@ const UserProfile = () => {
     profileImage: "/api/placeholder/150/150"
   });
 
+  const hasProfileImage = user.image
+
   const handlePasswordChange = (e) => {
     e.preventDefault();
     setIsEditingPassword(false);
@@ -45,62 +46,55 @@ const UserProfile = () => {
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
+    
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       setImageError("Please upload an image file");
       return;
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setImageError("Image size should be less than 5MB");
       return;
     }
 
     setImageError("");
-
-    // Create URL for preview
     const imageUrl = URL.createObjectURL(file);
     setUserData(prev => ({
       ...prev,
       profileImage: imageUrl
     }));
-
-    // Here you would typically upload the image to your server
-    // For demonstration, we're just using the local URL
   };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="bg-white shadow-xl rounded-2xl border border-gray-100">
-        {/* Header */}
         <div className="text-center border-b border-gray-100 p-6">
           <h1 className="text-3xl font-serif text-gray-800 tracking-wide">Personal Profile</h1>
         </div>
         
-        {/* Content */}
         <div className="p-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Profile Image Section */}
             <div className="text-center space-y-4">
               <div className="relative inline-block group">
                 <img
-                  src={userData.profileImage}
+                  src={user.image}
                   alt="Profile"
                   className="w-32 h-32 rounded-full object-contain border-4 border-gray-100 shadow-md mx-auto transition-transform group-hover:opacity-90"
                 />
-                <button 
-                  onClick={handleImageClick}
-                  className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-                >
-                  <Camera className="w-5 h-5 text-gray-600" />
-                </button>
+                {!hasProfileImage && (
+                  <button 
+                    onClick={handleImageClick}
+                    className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                  >
+                    <Camera className="w-5 h-5 text-gray-600" />
+                  </button>
+                )}
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -116,7 +110,7 @@ const UserProfile = () => {
               <p className="text-gray-500 text-sm">Member since 2024</p>
             </div>
 
-            {/* Rest of the component remains the same */}
+            {/* Rest of the component code remains the same */}
             <div className="md:col-span-2 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -143,13 +137,12 @@ const UserProfile = () => {
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-600 mb-2">Address</label>
                   <Input 
-                    value={userData.address}
+                    value={user?.address}
                     className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
                   />
                 </div>
               </div>
 
-              {/* Password Change Section */}
               {!isEditingPassword ? (
                 <Button
                   onClick={() => setIsEditingPassword(true)}
