@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Camera, Lock, Edit2, Check, X } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Camera, Lock, Check, X } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
+import axios from "../lib/axios";
+import toast from "react-hot-toast";
 
 const Input = ({ className, ...props }) => (
   <input
@@ -22,20 +24,9 @@ const UserProfile = () => {
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [imageError, setImageError] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
-  const {user} = useUserStore();
-  
-  const [userData, setUserData] = useState({
-    fullName: "Isabella Montgomery",
-    email: "isabella.montgomery@email.com",
-    phone: "+1 (555) 123-4567",
-    address: "789 Park Avenue, New York, NY 10065",
-    preferredSize: "US 6",
-    appointmentPreference: "Weekday Evenings",
-    profileImage: "/api/placeholder/150/150"
-  });
-
-  const hasProfileImage = user.image
+  const { user, setUser } = useUserStore();
 
   const handlePasswordChange = (e) => {
     e.preventDefault();
@@ -46,29 +37,56 @@ const UserProfile = () => {
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
-    
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
     if (!file.type.startsWith('image/')) {
       setImageError("Please upload an image file");
       return;
     }
 
+    // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       setImageError("Image size should be less than 5MB");
       return;
     }
 
     setImageError("");
-    const imageUrl = URL.createObjectURL(file);
-    setUserData(prev => ({
-      ...prev,
-      profileImage: imageUrl
-    }));
+    setIsUploading(true);
+
+    try {
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Image = reader.result;
+        
+        try {
+          // Send to backend
+          const response = await axios.post("/auth/addImage", {
+            image: base64Image
+          });
+          
+          
+          toast.success("Image uploaded successfully");
+        } catch (error) {
+          toast.error("Failed to upload image");
+          setImageError("Failed to upload image. Please try again.");
+          console.error("Image upload error:", error);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    } catch (error) {
+      toast.error("Failed to process image");
+      setImageError("Failed to process image. Please try again.");
+      console.error("File reading error:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -83,18 +101,19 @@ const UserProfile = () => {
             <div className="text-center space-y-4">
               <div className="relative inline-block group">
                 <img
-                  src={user.image}
+                  src={user?.image || "/api/placeholder/150/150"}
                   alt="Profile"
-                  className="w-32 h-32 rounded-full object-contain border-4 border-gray-100 shadow-md mx-auto transition-transform group-hover:opacity-90"
+                  className={`w-32 h-32 rounded-full object-contain border-4 border-gray-100 shadow-md mx-auto transition-transform group-hover:opacity-90 ${
+                    isUploading ? 'opacity-50' : ''
+                  }`}
                 />
-                {!hasProfileImage && (
-                  <button 
-                    onClick={handleImageClick}
-                    className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-                  >
-                    <Camera className="w-5 h-5 text-gray-600" />
-                  </button>
-                )}
+                <button 
+                  onClick={handleImageClick}
+                  className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                  disabled={isUploading}
+                >
+                  <Camera className="w-5 h-5 text-gray-600" />
+                </button>
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -106,39 +125,45 @@ const UserProfile = () => {
               {imageError && (
                 <div className="text-red-500 text-sm">{imageError}</div>
               )}
+              {isUploading && (
+                <div className="text-gray-500 text-sm">Uploading...</div>
+              )}
               <h3 className="text-xl font-medium text-gray-800">{user?.name}</h3>
               <p className="text-gray-500 text-sm">Member since 2024</p>
             </div>
 
-            {/* Rest of the component code remains the same */}
             <div className="md:col-span-2 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-2">Full Name</label>
                   <Input 
-                    value={user.name}
-                    className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
+                    value={user?.name || ''}
+                    readOnly
+                    className="bg-gray-50 border-gray-200"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-2">Email</label>
                   <Input 
-                    value={user.email}
-                    className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
+                    value={user?.email || ''}
+                    readOnly
+                    className="bg-gray-50 border-gray-200"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-2">Preferred Size</label>
                   <Input 
-                    value={userData.preferredSize}
-                    className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
+                    value={user?.preferredSize || ''}
+                    readOnly
+                    className="bg-gray-50 border-gray-200"
                   />
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-600 mb-2">Address</label>
                   <Input 
-                    value={user?.address}
-                    className="bg-gray-50 border-gray-200 hover:bg-white transition-colors"
+                    value={user?.address || ''}
+                    readOnly
+                    className="bg-gray-50 border-gray-200"
                   />
                 </div>
               </div>
