@@ -150,8 +150,8 @@ export const refreshToken = async (req, res) => {
 
 export const addImage = async (req, res) => {
     const { image } = req.body;
-    const userId = req.user._id; // Assuming req.user contains the authenticated user
-
+    const userId = req.user.id; // Assuming req.user contains the authenticated user
+    console.log( image , userId)
     try {
 
         // Upload image to Cloudinary
