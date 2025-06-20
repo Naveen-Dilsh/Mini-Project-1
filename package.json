@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@react-three/drei": "^10.3.0",
+    "@react-three/fiber": "^9.1.2",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
@@ -20,7 +22,8 @@
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.4",
-    "stripe": "^17.5.0"
+    "stripe": "^17.5.0",
+    "three": "^0.177.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

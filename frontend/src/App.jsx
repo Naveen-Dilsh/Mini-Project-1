@@ -10,6 +10,7 @@ import { useEffect } from "react"
 import LoadingSpinner from "./components/LoadingSpinner"
 import AdminPage from "./pages/AdminPage"
 import CollectionsPage from "./pages/CollectionsPage"
+import SuitDesignerPage from "./pages/SuitDesignerPage"
 import CategoryPage from "./pages/CategoryPage"
 import CartPage from "./pages/CartPage"
 import { useCartStore } from "./stores/useCartStore"
@@ -22,6 +23,8 @@ import Footer from "./components/Footer"
 import SizeGuidePage from "./pages/SizeGuidePage"
 import ContactUsPage from "./pages/ContactUs"
 import UserPage from "./pages/UserPage"
+import MaterialsPage from "./pages/MaterialPage"
+import ClothingDesignerPage from "./pages/ClothingDesignerPage"
 
 
 
@@ -50,9 +53,13 @@ function App() {
         {/* <Route path="/signup" element={!user ?<SignupPage/>:<Navigate to ="/"/>}/> */}
         <Route path="/signup" element={<SignupPage/>}/>
         <Route path="/login" element={!user ?<LoginPage/>:<Navigate to="/"/>}/>
-        <Route path="/size-guide" element={<SizeGuidePage/>}/>
-        <Route path="/contact" element={<ContactUsPage/>}/>
+        <Route path="/size-guide" element={<MaterialsPage/>}/>
+        <Route path="/contact" element={<ClothingDesignerPage />}/>
         <Route path="/collection" element={<CollectionPage2/>}/>
+        <Route path="/clothing-designer" element={<ClothingDesignerPage />} />
+          <Route path="/admin/materials" element={<MaterialsPage/>}/>
+        {/* <Route path="/collection" element={<CollectionPage2/>}/> */}
+        
         <Route path="/category/:category" element={<CategoryPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
         <Route path="/product-details" element={<ProductDetails/>}/>
