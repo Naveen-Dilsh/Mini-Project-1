@@ -24,7 +24,7 @@ const CollectionItem2 = ({ image, title, price, categories ,mainCategory}) => {
 
           <Link to={"/category"+mainCategory} className="block">
           <button className="w-full px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-all duration-300">
-            START DESIGNING
+            START EXPLORING
           </button>
           </Link>
         </div>
