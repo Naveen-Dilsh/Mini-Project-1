@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import CartItemCard from '../components/CartItemCard';
 import { useCartStore } from '../stores/useCartStore';
+import OrderSummary from '../components/OrderSummary';
 
 const CartPage = () => {
   const { cart } = useCartStore();
@@ -92,47 +93,7 @@ const CartPage = () => {
                 </button>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-4">
-                <h2 className="text-lg font-semibold text-gray-900 mb-3">
-                  Order Summary
-                </h2>
-                <div className="space-y-3">
-                  <div className="flex justify-between text-gray-600">
-                    <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-600">
-                    <span>Shipping</span>
-                    <span>${shipping.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-600">
-                    <span>Tax</span>
-                    <span>${tax.toFixed(2)}</span>
-                  </div>
-                  <div className="h-px bg-gray-200" />
-                  <div className="flex justify-between text-lg font-semibold">
-                    <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
-                  </div>
-
-                  <button
-                    disabled={!selectedAddress}
-                    className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 text-white font-medium ${
-                      selectedAddress
-                        ? 'bg-gray-900 hover:bg-black'
-                        : 'bg-gray-300 cursor-not-allowed'
-                    }`}
-                  >
-                    <CreditCard className="w-5 h-5" />
-                    {selectedAddress ? 'Proceed to Checkout' : 'Select Address to Continue'}
-                  </button>
-
-                  <div className="flex items-center justify-center gap-2 text-gray-500 text-sm mt-3">
-                    <Shield className="w-4 h-4" />
-                    <span>Secure Checkout</span>
-                  </div>
-                </div>
-              </div>
+              <OrderSummary/>
             </div>
           </div>
         </motion.div>
